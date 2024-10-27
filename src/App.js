@@ -2,29 +2,36 @@ import './App.css';
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import 'font-awesome/css/font-awesome.min.css';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
-import Navbar from './layout/Navbar';
-import Home from './pages/Home';
-import Register from './users/Register';
-import Login from './users/AdminLoginPanel';
+
+
+import Login from './components/Auth/Login';
+import AdminDashboard from './components/Admin/AdminDashboard';
+import ManagerDashboard from './components/Manager/ManagerDashboard';
+import Header from './components/Layout/Header';
+import Footer from './components/Layout/Footer';
 
 
 
 function App() {
-  return (
+    return (
+        <Router> 
+            <div>
+            <Header />
+           
 
-  <div className="App">
-      <Router>
+            <Routes>
+                <Route path="/" element={<Login />} />
+                <Route path="/admin" element={<AdminDashboard />} />
+                <Route path="/manager" element={<ManagerDashboard />} />
 
-      <Routes>
-        <Route exact path="/" element={<Login/>}/>
-        <Route exact path="register" element={<Register />} />
-       
-    
-      </Routes>
-      
-      </Router>
-    </div>
-  );
+        
+            </Routes>
+            
+            <Footer/>
+            </div>
+
+        </Router>
+    );
 }
 
 export default App;

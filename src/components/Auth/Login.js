@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import '../../styles/Login.css'; 
 import { Modal, Button, Form } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import '../css/Login.css'; 
+
 
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
 
+  const navigate = useNavigate();
 
   //mini windows declear
   const [showModal, setShowModal] = useState(false);
   //windows variable declear
   const [newPassword, setNewPassword] = useState({
-    Username: '',
+    username: '',
     password: '',
    
   });
@@ -30,40 +32,31 @@ export default function Login() {
       [e.target.name]: e.target.value,
     });
   };
-  const handleNewPassword = async () => {
-    try {
-      
-       //patient data sent to API for save in database
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/newPassword`);//respose status code
-      if (response.status === 201) { // assuming 201 is the success status
-        const SetPassword = response.data;
-
-        
-        // Close the modal after successful addition
-      handleCloseModal();
-      }
-    } catch (error) {
-      console.error('Error adding patient:', error);
-    }
-  };
-
-
-
-
 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8080/api/users/login', {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/login`, {
         username,
         password
       });
-      console.log('Login successful:', response.data);
-      if(response.data===true)
+
+      if(response.data===0)
       setMessage('Login successful');
+      else if(response.data===1)
+      setMessage('User not found');
+      else if(response.data===2)
+        setMessage('Wrong password');
       else
-      setMessage('Login Failed');
+      setMessage('Contract admin');
+
+      localStorage.setItem('auth', 'true'); // Set auth flag in localStorage
+      localStorage.setItem('username', username); // Store username
+      navigate('/admin'); // Redirect to home page
+
+
+
     } catch (error) {
       if (error.response && error.response.status === 401) {
         console.error('Login failed:', error.response.data);
@@ -74,6 +67,48 @@ export default function Login() {
       }
     }
   };
+
+
+
+  const handleResetPassword = async () => {
+    try {
+      
+       //patient data sent to API for save in database
+       const response = await axios.put(`${process.env.REACT_APP_API_URL}/api/resetPassword`,
+        {
+            username: newPassword.username,
+            password: newPassword.password
+        }
+    );//respose status code
+      if (response.status === 200) { // assuming 200 is the success status    
+            setNewPassword({
+              username: '',
+              password: ''
+            });
+            handleCloseModal();
+            setMessage('Password reset successfully!');
+        } else {
+            setMessage('Password reset failed.');
+        }
+    } catch (error) {
+
+      if (error.response && error.response.status === 404) {
+      // Specific message for 404 (user not found)
+      handleCloseModal();
+      setMessage('User not found');
+    } else {
+      // General error message for other errors
+      setMessage('Error resetting password: ' + error.message);
+    }
+  }
+  };
+
+
+
+
+
+
+
 
   return (
 
@@ -161,7 +196,7 @@ export default function Login() {
           <Button variant="secondary" onClick={handleCloseModal}>
             Cancel
           </Button>
-          <Button variant="primary" onClick={handleNewPassword}>
+          <Button variant="primary" onClick={handleResetPassword}>
             Change Password
           </Button>
         </Modal.Footer>
