@@ -1,117 +1,64 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import '../../styles/Login.css'; 
-import { Modal, Button, Form } from 'react-bootstrap';
+// src/components/Auth/Login.js
 
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { Modal, Button, Form } from 'react-bootstrap';
+import { login, resetUserPassword, clearMessage } from '../../store/loginSlice';
+import '../../styles/Login.css';
 
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
-
-  const navigate = useNavigate();
-
-  //mini windows declear
   const [showModal, setShowModal] = useState(false);
-  //windows variable declear
-  const [newPassword, setNewPassword] = useState({
-    username: '',
-    password: '',
-   
-  });
+  const [newPassword, setNewPassword] = useState({ username: '', password: '' });
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { message, userRole, loading } = useSelector((state) => state.login);
 
+  // Modal handlers
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
 
-  //handle changes in form input fields
-  const handleInputChange = (e) => {setNewPassword
-    ({
-      ...newPassword,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-
-  const handleSubmit = async (e) => {
+  // Handle login submit
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/login`, {
-        username,
-        password
-      });
-
-      if(response.data===0)
-      setMessage('Login successful');
-      else if(response.data===1)
-      setMessage('User not found');
-      else if(response.data===2)
-        setMessage('Wrong password');
-      else
-      setMessage('Contract admin');
-
-      localStorage.setItem('auth', 'true'); // Set auth flag in localStorage
-      localStorage.setItem('username', username); // Store username
-      navigate('/admin'); // Redirect to home page
-
-
-
-    } catch (error) {
-      if (error.response && error.response.status === 401) {
-        console.error('Login failed:', error.response.data);
-        setMessage('Invalid username or password');
-      } else {
-        console.error('Login failed:', error.message);
-        setMessage('Login failed: ' + error.message);
-      }
-    }
+    dispatch(login({ username, password }))
+      .unwrap()
+      .then(() => {
+        localStorage.setItem('auth', 'true');
+        localStorage.setItem('username', username);
+        navigate(
+          userRole === 'admin' 
+            ? '/admin' 
+            : userRole === 'manager' 
+            ? '/manager' 
+            : userRole === 'assistant_manager' 
+            ? '/assistant-manager' 
+            : '/salesman' // Default route for 'salesman' role
+        );// Role-based redirection
+      })
+      .catch((err) => console.error(err));
   };
 
-
-
-  const handleResetPassword = async () => {
-    try {
-      
-       //patient data sent to API for save in database
-       const response = await axios.put(`${process.env.REACT_APP_API_URL}/api/resetPassword`,
-        {
-            username: newPassword.username,
-            password: newPassword.password
-        }
-    );//respose status code
-      if (response.status === 200) { // assuming 200 is the success status    
-            setNewPassword({
-              username: '',
-              password: ''
-            });
-            handleCloseModal();
-            setMessage('Password reset successfully!');
-        } else {
-            setMessage('Password reset failed.');
-        }
-    } catch (error) {
-
-      if (error.response && error.response.status === 404) {
-      // Specific message for 404 (user not found)
-      handleCloseModal();
-      setMessage('User not found');
-    } else {
-      // General error message for other errors
-      setMessage('Error resetting password: ' + error.message);
-    }
-  }
+  // Handle password reset submit
+  const handleResetPassword = () => {
+    dispatch(resetUserPassword(newPassword))
+      .unwrap()
+      .then(() => {
+        setNewPassword({ username: '', password: '' });
+        handleCloseModal();
+      })
+      .catch((err) => console.error(err));
   };
 
-
-
-
-
-
-
+  // Handle form changes
+  const handleInputChange = (e) => {
+    setNewPassword({ ...newPassword, [e.target.name]: e.target.value });
+  };
 
   return (
-
     <div className="login-container">
       <div className="login-card">
         <div className="text-center">
@@ -151,27 +98,24 @@ export default function Login() {
           <div className="form-group form-check mt-3">
             <input type="checkbox" className="form-check-input" id="rememberMe" />
             <label className="form-check-label mx-4" htmlFor="rememberMe">Remember me</label>
-          
-            <a href="#" className="float-right " onClick={handleShowModal} >Forgot password?</a>
+            <a href="#" className="float-right" onClick={handleShowModal}>Forgot password?</a>
           </div>
-          <button type="submit" className="btn btn-primary btn-block mt-2">Login</button>
+          <button type="submit" className="btn btn-primary btn-block mt-2" disabled={loading}>
+            {loading ? 'Loading...' : 'Login'}
+          </button>
         </form>
         {message && <p className="mt-3 text-center">{message}</p>}
       </div>
 
-
-
-
-
-{/* Modal for Reset password */}
-<Modal show={showModal} onHide={handleCloseModal}>
+      {/* Modal for Reset password */}
+      <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>
           <Modal.Title>Password Reset</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
             <Form.Group>
-              <Form.Label>User Name</Form.Label>
+              <Form.Label>Username</Form.Label>
               <Form.Control
                 type="text"
                 name="username"
@@ -201,13 +145,6 @@ export default function Login() {
           </Button>
         </Modal.Footer>
       </Modal>
-
-
-
-
-
-
     </div>
-  
   );
 }
