@@ -6,6 +6,8 @@ import { loginUser, resetPassword } from '../utils/api';
 export const login = createAsyncThunk('login/loginUser', async ({ username, password }, { rejectWithValue }) => {
   try {
     const data = await loginUser(username, password);
+    localStorage.setItem('username', username);
+    localStorage.setItem('userRole', data); // Persist role in localStorage
     return data;
   } catch (error) {
     return rejectWithValue(error.response?.data || 'Login failed');
@@ -24,7 +26,7 @@ export const resetUserPassword = createAsyncThunk('login/resetPassword', async (
 const loginSlice = createSlice({
   name: 'login',
   initialState: {
-    userRole: null,
+    userRole: localStorage.getItem('userRole') || null, // Load initial role from localStorage
     message: '',
     loading: false,
   },

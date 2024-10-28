@@ -26,9 +26,10 @@ export default function Login() {
     e.preventDefault();
     dispatch(login({ username, password }))
       .unwrap()
-      .then(() => {
+      .then((role) => {
         localStorage.setItem('auth', 'true');
         localStorage.setItem('username', username);
+        localStorage.setItem('userRole', role);
         navigate(
           userRole === 'admin' 
             ? '/admin' 
