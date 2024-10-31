@@ -1,60 +1,72 @@
-// src/components/Admin/AssignRole.js
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
-import { updateUserRole, getUserRole } from '../../utils/api'; 
+import { getUserRole, updateUserRole } from '../../utils/api'; 
 import '../../styles/AssignRole.css';
 
 const AssignRole = () => {
-  const [userId, setUserId] = useState('');
+  const [username, setUsername] = useState('');
   const [currentRole, setCurrentRole] = useState('');
   const [newRole, setNewRole] = useState('');
-  const dispatch = useDispatch();
+  const [error, setError] = useState('');
+  const [roleFetched, setRoleFetched] = useState(false); // Track if role is fetched
 
   const handleFetchRole = async () => {
-    // Fetch current role based on userId or username
     try {
-      const role = await getUserRole(userId); // Fetch API call to get user role
-      setCurrentRole(role);
+      setError('');
+      const role = await getUserRole(username);  // Fetch user role by username
+      setCurrentRole(role);  // Set the fetched role to display it
+      setRoleFetched(true);  // Indicate that the role has been fetched
+      console.log('Role response:', role);
     } catch (error) {
       console.error('Error fetching user role:', error);
+      setError('Failed to fetch user role. Please check the username.');
     }
   };
 
   const handleUpdateRole = async () => {
     try {
-      await updateUserRole(userId, newRole);
+      setError('');
+      if (!newRole) {
+        setError('Please select a new role before updating.');
+        return;
+      }
+      //const roleData = { role: newRole }; // Prepare the data to send
+      //console.log('Role :', newRole);
+      await updateUserRole(username, newRole);  // Update user role API call
       alert('Role updated successfully');
-      setUserId('');
+      setUsername('');
       setCurrentRole('');
       setNewRole('');
+      setRoleFetched(false); // Reset role fetched state
     } catch (error) {
       console.error('Error updating user role:', error);
+      setError('Failed to update role. Please try again.');
     }
   };
 
   return (
     <div className="assign-role-form">
       <h2>Assign Role</h2>
+      {error && <p className="error-message">{error}</p>}
       <Form>
-        <Form.Group controlId="formUserId">
-          <Form.Label>User ID or Username</Form.Label>
+        <Form.Group controlId="formUsername">
+          <Form.Label>Username</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Enter User ID or Username"
-            value={userId}
-            onChange={(e) => setUserId(e.target.value)}
+            placeholder="Enter Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
         </Form.Group>
-        <Button variant="outline-primary" onClick={handleFetchRole}>
-          Fetch Current Role
-        </Button>
-        
-        {currentRole && (
+        {!roleFetched ? (
+          <Button variant="outline-primary" onClick={handleFetchRole}>
+            Fetch Current Role
+          </Button>
+        ) : (
           <>
             <Form.Group controlId="formCurrentRole">
               <Form.Label>Current Role</Form.Label>
-              <Form.Control type="text" value={currentRole} disabled />
+              <Form.Control type="text" value={currentRole} readOnly />
             </Form.Group>
 
             <Form.Group controlId="formNewRole">

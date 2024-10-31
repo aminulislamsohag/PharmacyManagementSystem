@@ -39,20 +39,21 @@ export const addUser = async (userid, username, password, role) => {
 };
 
 
-export const getUserRole = async (userid) => {
-  try {
-    const response = await axios.get(`${process.env.REACT_APP_API_URL}/user/${userid}/role`);
-    return response.data.role; // Assuming API returns the role as { role: "role_name" }
-  } catch (error) {
-    console.error("Error fetching user role:", error);
-    throw error;
+export const getUserRole = async (username) => {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/user/${username}/role`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch role');
   }
+  const role = await response.text(); // Assuming the response is just the role as a string
+  return role;
 };
 
 
-export const updateUserRole = async (userid, role) => {
+
+export const updateUserRole = async (username, newRole) => {
   try {
-    const response = await axios.put(`${process.env.REACT_APP_API_URL}/user/${userid}/role`, { role });
+    console.log('RoleData :', newRole);
+    const response = await axios.put(`${process.env.REACT_APP_API_URL}/user/${username}/role`, {newRole});
     return response.data;
   } catch (error) {
     console.error("Error updating user role:", error);
