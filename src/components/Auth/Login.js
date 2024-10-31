@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Modal, Button, Form } from 'react-bootstrap';
-import { login, resetUserPassword, clearMessage } from '../../store/loginSlice';
+import { login, resetUserPassword } from '../../store/loginSlice';
 import '../../styles/Login.css';
 
 export default function Login() {
@@ -128,7 +128,7 @@ export default function Login() {
             <Form.Group>
               <Form.Label>New Password</Form.Label>
               <Form.Control
-                type="text"
+                type="password"
                 name="password"
                 value={newPassword.password}
                 onChange={handleInputChange}
