@@ -44,7 +44,7 @@ const loginSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
         state.userRole = action.payload; // Assuming user role is returned by API
-        state.message = 'Login successful';
+        state.message = 'Logout successful';
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;

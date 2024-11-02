@@ -60,3 +60,35 @@ export const updateUserRole = async (username, newRole) => {
     throw error;
   }
 };
+
+
+export const addChategory = async (chategoryid,chategoryname,chategorydesc,medicineid,supplierid) => {
+  try {
+    const response = await axios.post(`${process.env.REACT_APP_API_URL}/medicine/chategory`, {
+      chategoryid,
+      chategoryname,
+      chategorydesc,
+      medicineid,
+      supplierid
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+export const addSupplier = async (supplierid,suppliername,suppliercontract,supplieraddress,supplieremail) => {
+  try {
+    const response = await axios.post(`${process.env.REACT_APP_API_URL}/medicine/supplier`, {
+      supplierid,
+      suppliername,
+      suppliercontract,
+      supplieraddress,
+      supplieremail
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

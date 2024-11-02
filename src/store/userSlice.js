@@ -1,18 +1,17 @@
+// userSlice.js
 import { createSlice } from '@reduxjs/toolkit';
-
-const initialState = {
-  showAddUserForm: false,
-};
 
 const userSlice = createSlice({
   name: 'user',
-  initialState,
+  initialState: {
+    showAddUserForm: false,
+  },
   reducers: {
-    toggleAddUserForm: (state) => {
-      state.showAddUserForm = !state.showAddUserForm;
+    setShowAddUserForm: (state, action) => {
+      state.showAddUserForm = action.payload;
     },
   },
 });
 
-export const { toggleAddUserForm } = userSlice.actions;
+export const { setShowAddUserForm } = userSlice.actions;
 export default userSlice.reducer;
