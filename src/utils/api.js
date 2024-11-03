@@ -62,13 +62,13 @@ export const updateUserRole = async (username, newRole) => {
 };
 
 
-export const addChategory = async (chategoryid,chategoryname,chategorydesc,medicineid,supplierid) => {
+export const addChategory = async (chategoryid,chategoryname,chategorydesc,location,supplierid) => {
   try {
     const response = await axios.post(`${process.env.REACT_APP_API_URL}/medicine/chategory`, {
       chategoryid,
       chategoryname,
       chategorydesc,
-      medicineid,
+      location,
       supplierid
     });
     return response.data;

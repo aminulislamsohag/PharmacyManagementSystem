@@ -6,18 +6,18 @@ const AddChategory = () => {
   const [chategoryid, setChategoryid] = useState('');
   const [chategoryname, setChategoryname] = useState('');
   const [chategorydesc, setChategorydesc] = useState('');
-  const [medicineid, setMedicineid] = useState('');
+  const [location, SetLocation] = useState('');
   const [supplierid, setSupplierid] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await addChategory(chategoryid,chategoryname,chategorydesc,medicineid,supplierid);
+      await addChategory(parseInt(chategoryid),chategoryname,chategorydesc,location,supplierid);
       alert('User added successfully');
       setChategoryid('');
       setChategoryname('');
       setChategorydesc('');
-      setMedicineid('');
+      SetLocation('');
       setSupplierid('');
     } catch (error) {
       console.error('Error adding user:', error);
@@ -25,7 +25,7 @@ const AddChategory = () => {
   };
 
   return (
-    <div className="add-user-form">
+    <div className="add-addcategory-form">
       <form onSubmit={handleSubmit}>
         <label>
         Category ID:
@@ -40,8 +40,8 @@ const AddChategory = () => {
           <input type="text" value={chategorydesc} onChange={(e) => setChategorydesc(e.target.value)} required />
         </label>
         <label>
-        Medicine ID:
-          <input type="text" value={medicineid} onChange={(e) => setMedicineid(e.target.value)} required />
+        Location:
+          <input type="text" value={location} onChange={(e) => SetLocation(e.target.value)} required />
         </label>
         <label>
         Supplier ID:

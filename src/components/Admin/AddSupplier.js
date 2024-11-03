@@ -13,7 +13,7 @@ const AddChategory = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await addSupplier(supplierid,suppliername,suppliercontract,supplieraddress,supplieremail);
+      await addSupplier(parseInt(supplierid),suppliername,suppliercontract,supplieraddress,supplieremail);
       alert('User added successfully');
       setSupplierid('');
       setSuppliername('');
@@ -26,7 +26,7 @@ const AddChategory = () => {
   };
 
   return (
-    <div className="add-user-form">
+    <div className="add-addsupplier-form">
       <form onSubmit={handleSubmit}>
         <label>
          ID:
@@ -46,7 +46,7 @@ const AddChategory = () => {
         </label>
         <label>
         Email :
-          <input type="text" value={supplieremail} onChange={(e) => setSupplieremail(e.target.value)} required />
+          <input type="email" value={supplieremail} onChange={(e) => setSupplieremail(e.target.value)} required />
         </label>
        
         <button type="submit">Add Supplier</button>
