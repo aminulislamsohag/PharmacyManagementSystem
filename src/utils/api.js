@@ -92,3 +92,38 @@ export const addSupplier = async (supplierid,suppliername,suppliercontract,suppl
     throw error;
   }
 };
+
+
+
+export const fetchSuppliersData = async () => {
+  const response = await fetch('http://localhost:8080/medicine/suppliers');
+  if (!response.ok) throw new Error('Failed to fetch suppliers');
+  return await response.json();
+};
+
+
+export const updateSupplierData = async (supplier) => {
+  try {
+    const response = await axios.put(`${process.env.REACT_APP_API_URL}/medicine/editsupplier/${supplier.id}`, {
+      supplierid:supplier.supplierid,
+      suppliername: supplier.suppliername,
+      suppliercontract: supplier.suppliercontract,
+      supplieraddress: supplier.supplieraddress,
+      supplieremail: supplier.supplieremail,
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error updating supplier:', error);
+    throw error;
+  }
+};
+
+
+export const deleteSupplierData = async (id) => {
+  try {
+    const response = await axios.delete(`${process.env.REACT_APP_API_URL}/medicine/deletesupplier/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

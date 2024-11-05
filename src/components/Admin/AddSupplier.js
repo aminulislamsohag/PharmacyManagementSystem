@@ -14,7 +14,7 @@ const AddChategory = () => {
     e.preventDefault();
     try {
       await addSupplier(parseInt(supplierid),suppliername,suppliercontract,supplieraddress,supplieremail);
-      alert('User added successfully');
+      alert('Supplier added successfully');
       setSupplierid('');
       setSuppliername('');
       setSuppliercontract('');

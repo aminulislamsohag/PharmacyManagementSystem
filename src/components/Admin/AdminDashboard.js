@@ -7,9 +7,9 @@ import '../../styles/AdminDashboard.css';
 import AddUser from './AddUser';
 import AssignRole from './AssignRole';
 import { setShowAddUserForm } from '../../store/userSlice';
-import AddChategory from './AddCategory';
+import AddCategory from './AddCategory';
 import AddSupply from './AddSupplier';
-
+import ShowSupplierInfo from './ShowSupplierInfo';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -20,10 +20,10 @@ const AdminDashboard = () => {
   const [showUserOptions, setShowUserOptions] = useState(false);
   const showAddUserForm = useSelector((state) => state.user.showAddUserForm);
   const [showAssignRole, setShowAssignRole] = useState(false);
-
-  const [showMedicineOptions, setShowMedicineOptions] = useState(false); // New state for Medicine submenu
-  const [showAddChategory, setShowAddChategory] = useState(false);
+  const [showMedicineOptions, setShowMedicineOptions] = useState(false);
+  const [showAddCategory, setShowAddCategory] = useState(false);
   const [showAddSupplier, setShowAddSupplier] = useState(false);
+  const [showSupplierInfo, setShowSupplierInfo] = useState(false);
 
   useEffect(() => {
     const isAuthenticated = JSON.parse(localStorage.getItem('auth')) === true;
@@ -46,38 +46,49 @@ const AdminDashboard = () => {
     setHeaderTitle('Dashboard');
     setShowAssignRole(false);
     dispatch(setShowAddUserForm(false));
-    setShowAddChategory(false);
+    setShowAddCategory(false);
     setShowAddSupplier(false);
+    setShowSupplierInfo(false);
   };
 
   const handleShowAddUser = () => {
     setHeaderTitle('Add User Form');
     setShowAssignRole(false);
     dispatch(setShowAddUserForm(true));
+    setShowSupplierInfo(false);
   };
 
   const handleShowAssignRole = () => {
     setHeaderTitle('Assign Role');
     dispatch(setShowAddUserForm(false));
     setShowAssignRole(true);
+    setShowSupplierInfo(false);
   };
-
-
 
   const handleShowAddCategory = () => {
     setHeaderTitle('Add Category');
     setShowAssignRole(false);
     dispatch(setShowAddUserForm(false));
-    setShowAddChategory(true);
-    setShowAddSupplier(false);
+    setShowAddCategory(true);
+    setShowSupplierInfo(false);
   };
 
   const handleShowAddSupplier = () => {
     setHeaderTitle('Add Supplier');
     setShowAssignRole(false);
     dispatch(setShowAddUserForm(false));
-    setShowAddChategory(false);
+    setShowAddCategory(false);
     setShowAddSupplier(true);
+    setShowSupplierInfo(false);
+  };
+
+  const handleShowSupplierInfo = () => {
+   setHeaderTitle('');
+    setShowAssignRole(false);
+    dispatch(setShowAddUserForm(false));
+    setShowAddCategory(false);
+    setShowAddSupplier(false);
+    setShowSupplierInfo(true);
   };
 
   return (
@@ -89,18 +100,14 @@ const AdminDashboard = () => {
         </div>
         <Nav className="flex-column">
           <Nav.Link onClick={handleShowDashboard}>Dashboard</Nav.Link>
-          <Nav.Link onClick={() => setShowUserOptions(!showUserOptions)}>
-           User
-          </Nav.Link>
+          <Nav.Link onClick={() => setShowUserOptions(!showUserOptions)}>User</Nav.Link>
           <Collapse in={showUserOptions}>
             <div className="user-options">
               <Nav.Link onClick={handleShowAddUser}>Add User</Nav.Link>
               <Nav.Link onClick={handleShowAssignRole}>Assign Role</Nav.Link>
             </div>
           </Collapse>
-          <Nav.Link onClick={()=>setShowMedicineOptions(!showMedicineOptions)}>
-            Medicine
-            </Nav.Link>
+          <Nav.Link onClick={() => setShowMedicineOptions(!showMedicineOptions)}>Medicine</Nav.Link>
           <Collapse in={showMedicineOptions}>
             <div className="user-options">
               <Nav.Link onClick={handleShowAddCategory}>Add Category</Nav.Link>
@@ -120,14 +127,13 @@ const AdminDashboard = () => {
           <AddUser />
         ) : showAssignRole ? (
           <AssignRole />
-        ) :  showAddChategory ? (
-          <AddChategory />
+        ) : showAddCategory ? (
+          <AddCategory />
         ) : showAddSupplier ? (
-          <AddSupply/>
-        ) : 
-        
-        
-        (
+          <AddSupply />
+        ) : showSupplierInfo ? (
+          <ShowSupplierInfo />
+        ) : (
           <div>
             <div className="dashboard-stats">
               <div className="stat-card">Total Customers <span>5</span></div>
@@ -139,8 +145,8 @@ const AdminDashboard = () => {
             </div>
             <div className="action-buttons">
               <Button variant="outline-primary" onClick={() => navigate('/admin/invoice')}>Create New Invoice</Button>
-              <Button variant="outline-primary" onClick={() => navigate('/admin/customer')}>Add New Customer</Button>
-              <Button variant="outline-primary" onClick={() => navigate('/admin/medicine')}>Add New Medicine</Button>
+              <Button variant="outline-primary" onClick={handleShowSupplierInfo}>Show Supplier INFO</Button>
+              <Button variant="outline-primary" onClick={() => navigate('/admin/medicine')}>Show Category Info</Button>
               <Button variant="outline-primary" onClick={() => navigate('/admin/supplier')}>Add New Supplier</Button>
             </div>
           </div>

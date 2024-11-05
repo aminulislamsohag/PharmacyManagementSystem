@@ -13,7 +13,7 @@ const AddChategory = () => {
     e.preventDefault();
     try {
       await addChategory(parseInt(chategoryid),chategoryname,chategorydesc,location,supplierid);
-      alert('User added successfully');
+      alert('Chategory added successfully');
       setChategoryid('');
       setChategoryname('');
       setChategorydesc('');
