@@ -96,7 +96,7 @@ export const addSupplier = async (supplierid,suppliername,suppliercontract,suppl
 
 
 export const fetchSuppliersData = async () => {
-  const response = await fetch('http://localhost:8080/medicine/suppliers');
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/medicine/suppliers`);
   if (!response.ok) throw new Error('Failed to fetch suppliers');
   return await response.json();
 };
@@ -126,4 +126,67 @@ export const deleteSupplierData = async (id) => {
   } catch (error) {
     throw error;
   }
+};
+
+
+
+
+export const fetchChategorysData = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/medicine/chategorys`);
+  if (!response.ok) throw new Error('Failed to fetch suppliers');
+  return await response.json();
+};
+
+
+export const updateChategoryData = async (chategory) => {
+  try {
+    const response = await axios.put(`${process.env.REACT_APP_API_URL}/medicine/editchategory/${chategory.id}`, {
+      chategoryid:chategory.chategoryid,
+      chategoryname: chategory.chategoryname,
+      chategorydesc: chategory.chategorydesc,
+      location: chategory.location,
+      supplierid: chategory.supplierid,
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error updating Chategory:', error);
+    throw error;
+  }
+};
+
+
+export const deleteChategoryData = async (id) => {
+  try {
+    const response = await axios.delete(`${process.env.REACT_APP_API_URL}/medicine/deletechategory/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+
+export const fetchUserData = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/user/alluser`);
+  if (!response.ok) throw new Error('Failed to fetch suppliers');
+  return await response.json();
+};
+
+export const deleteUserData = async (id) => {
+  try {
+    const response = await axios.delete(`${process.env.REACT_APP_API_URL}/user/deleteuser/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+
+
+
+export const fetcSearchData = async (searchQuery) => {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/user/search?query=${searchQuery}`);
+  if (!response.ok) throw new Error('Failed to fetch suppliers');
+  return await response.json();
 };

@@ -10,6 +10,9 @@ import { setShowAddUserForm } from '../../store/userSlice';
 import AddCategory from './AddCategory';
 import AddSupply from './AddSupplier';
 import ShowSupplierInfo from './ShowSupplierInfo';
+import ShowChategoryInfo from './ShowChategoryInfo';
+import ShowUserInfo from './ShowUserInfo';
+
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -24,6 +27,8 @@ const AdminDashboard = () => {
   const [showAddCategory, setShowAddCategory] = useState(false);
   const [showAddSupplier, setShowAddSupplier] = useState(false);
   const [showSupplierInfo, setShowSupplierInfo] = useState(false);
+  const [showChategoryInfo, setShowChategoryInfo] = useState(false);
+  const [showUserInfo, setShowUserInfo] = useState(false);
 
   useEffect(() => {
     const isAuthenticated = JSON.parse(localStorage.getItem('auth')) === true;
@@ -49,6 +54,9 @@ const AdminDashboard = () => {
     setShowAddCategory(false);
     setShowAddSupplier(false);
     setShowSupplierInfo(false);
+    setShowChategoryInfo(false);
+    setShowUserInfo(false);
+
   };
 
   const handleShowAddUser = () => {
@@ -56,6 +64,8 @@ const AdminDashboard = () => {
     setShowAssignRole(false);
     dispatch(setShowAddUserForm(true));
     setShowSupplierInfo(false);
+    setShowChategoryInfo(false);
+    setShowUserInfo(false);
   };
 
   const handleShowAssignRole = () => {
@@ -63,6 +73,8 @@ const AdminDashboard = () => {
     dispatch(setShowAddUserForm(false));
     setShowAssignRole(true);
     setShowSupplierInfo(false);
+    setShowChategoryInfo(false);
+    setShowUserInfo(false);
   };
 
   const handleShowAddCategory = () => {
@@ -71,6 +83,8 @@ const AdminDashboard = () => {
     dispatch(setShowAddUserForm(false));
     setShowAddCategory(true);
     setShowSupplierInfo(false);
+    setShowChategoryInfo(false);
+    setShowUserInfo(false);
   };
 
   const handleShowAddSupplier = () => {
@@ -80,6 +94,8 @@ const AdminDashboard = () => {
     setShowAddCategory(false);
     setShowAddSupplier(true);
     setShowSupplierInfo(false);
+    setShowChategoryInfo(false);
+    setShowUserInfo(false);
   };
 
   const handleShowSupplierInfo = () => {
@@ -89,7 +105,37 @@ const AdminDashboard = () => {
     setShowAddCategory(false);
     setShowAddSupplier(false);
     setShowSupplierInfo(true);
+    setShowChategoryInfo(false);
+    setShowUserInfo(false);
   };
+
+
+  const handleShowChategoryInfo = () => {
+    setHeaderTitle('');
+     setShowAssignRole(false);
+     dispatch(setShowAddUserForm(false));
+     setShowAddCategory(false);
+     setShowAddSupplier(false);
+     setShowSupplierInfo(false);
+     setShowChategoryInfo(true);
+     setShowUserInfo(false);
+   };
+
+   const handleShowUserInfo = () => {
+    setHeaderTitle('');
+     setShowAssignRole(false);
+     dispatch(setShowAddUserForm(false));
+     setShowAddCategory(false);
+     setShowAddSupplier(false);
+     setShowSupplierInfo(false);
+     setShowChategoryInfo(false);
+     setShowUserInfo(true);
+   };
+ 
+
+
+
+
 
   return (
     <div className="dashboard-container">
@@ -133,7 +179,14 @@ const AdminDashboard = () => {
           <AddSupply />
         ) : showSupplierInfo ? (
           <ShowSupplierInfo />
-        ) : (
+        ) : showChategoryInfo ? (
+          <ShowChategoryInfo />
+        ) : showUserInfo ? (
+          <ShowUserInfo />
+        ) : 
+        
+        
+            (
           <div>
             <div className="dashboard-stats">
               <div className="stat-card">Total Customers <span>5</span></div>
@@ -144,9 +197,9 @@ const AdminDashboard = () => {
               <div className="stat-card">Expired <span>0</span></div>
             </div>
             <div className="action-buttons">
-              <Button variant="outline-primary" onClick={() => navigate('/admin/invoice')}>Create New Invoice</Button>
+              <Button variant="outline-primary" onClick={handleShowUserInfo}>Show User INFO</Button>
               <Button variant="outline-primary" onClick={handleShowSupplierInfo}>Show Supplier INFO</Button>
-              <Button variant="outline-primary" onClick={() => navigate('/admin/medicine')}>Show Category Info</Button>
+              <Button variant="outline-primary" onClick={handleShowChategoryInfo}>Show Category Info</Button>
               <Button variant="outline-primary" onClick={() => navigate('/admin/supplier')}>Add New Supplier</Button>
             </div>
           </div>

@@ -50,7 +50,7 @@ const ShowSupplierInfo = () => {
           supplier.id === selectedSupplier.id ? selectedSupplier : supplier
         )
       );
-      alert('Edit successfully');
+      alert('Update successfully');
       setShowEditModal(false); // Close edit modal
     } catch (error) {
       console.error('Error updating supplier:', error);
@@ -169,7 +169,7 @@ const ShowSupplierInfo = () => {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowEditModal(false)}>Cancel</Button>
-          <Button variant="primary" onClick={handleSaveChanges}>Save</Button>
+          <Button variant="primary" onClick={handleSaveChanges}>Update</Button>
         </Modal.Footer>
       </Modal>
 
