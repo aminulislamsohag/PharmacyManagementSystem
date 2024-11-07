@@ -16,8 +16,10 @@ function App() {
 
   return (
     <Router> 
-      <div>
+      <div className="app-container">
         <Header />
+        {/* Scrollable main content area */}
+        <div className="main-content">
         <Routes>
           <Route path="/" element={<Login />} />
 
@@ -39,6 +41,7 @@ function App() {
             }
           />
         </Routes>
+        </div>
         <Footer />
       </div>
     </Router>

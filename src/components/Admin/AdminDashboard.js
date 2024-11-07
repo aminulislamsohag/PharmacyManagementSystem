@@ -9,6 +9,8 @@ import AssignRole from './AssignRole';
 import { setShowAddUserForm } from '../../store/userSlice';
 import AddCategory from './AddCategory';
 import AddSupply from './AddSupplier';
+import AddMedicine from './AddMedicine';
+import ListMedicine from './ListMedicine';
 import ShowSupplierInfo from './ShowSupplierInfo';
 import ShowChategoryInfo from './ShowChategoryInfo';
 import ShowUserInfo from './ShowUserInfo';
@@ -26,6 +28,8 @@ const AdminDashboard = () => {
   const [showMedicineOptions, setShowMedicineOptions] = useState(false);
   const [showAddCategory, setShowAddCategory] = useState(false);
   const [showAddSupplier, setShowAddSupplier] = useState(false);
+  const [showAddMedicine, setShowAddMedicine] = useState(false);
+  const [showListMedicine, setShowListMedicine] = useState(false);
   const [showSupplierInfo, setShowSupplierInfo] = useState(false);
   const [showChategoryInfo, setShowChategoryInfo] = useState(false);
   const [showUserInfo, setShowUserInfo] = useState(false);
@@ -53,9 +57,11 @@ const AdminDashboard = () => {
     dispatch(setShowAddUserForm(false));
     setShowAddCategory(false);
     setShowAddSupplier(false);
+    setShowAddMedicine(false);
     setShowSupplierInfo(false);
     setShowChategoryInfo(false);
     setShowUserInfo(false);
+    setShowListMedicine(false);
 
   };
 
@@ -66,6 +72,7 @@ const AdminDashboard = () => {
     setShowSupplierInfo(false);
     setShowChategoryInfo(false);
     setShowUserInfo(false);
+    setShowAddMedicine(false);
   };
 
   const handleShowAssignRole = () => {
@@ -75,6 +82,7 @@ const AdminDashboard = () => {
     setShowSupplierInfo(false);
     setShowChategoryInfo(false);
     setShowUserInfo(false);
+    setShowAddMedicine(false);
   };
 
   const handleShowAddCategory = () => {
@@ -85,6 +93,7 @@ const AdminDashboard = () => {
     setShowSupplierInfo(false);
     setShowChategoryInfo(false);
     setShowUserInfo(false);
+    setShowAddMedicine(false);
   };
 
   const handleShowAddSupplier = () => {
@@ -96,7 +105,36 @@ const AdminDashboard = () => {
     setShowSupplierInfo(false);
     setShowChategoryInfo(false);
     setShowUserInfo(false);
+    setShowAddMedicine(false);
   };
+  const handleShowAddMedicine = () => {
+    setHeaderTitle('Add Mecinine');
+    setShowAssignRole(false);
+    dispatch(setShowAddUserForm(false));
+    setShowAddCategory(false);
+    setShowAddSupplier(false);
+    setShowAddMedicine(true);
+    setShowSupplierInfo(false);
+    setShowChategoryInfo(false);
+    setShowUserInfo(false);
+  };
+
+  const handleShowMedicineList = () => {
+    setHeaderTitle('List of Medicine');
+    setShowAssignRole(false);
+    dispatch(setShowAddUserForm(false));
+    setShowAddCategory(false);
+    setShowAddSupplier(false);
+    setShowAddMedicine(false);
+    setShowSupplierInfo(false);
+    setShowChategoryInfo(false);
+    setShowUserInfo(false);
+    setShowListMedicine(true);
+   };
+ 
+
+
+
 
   const handleShowSupplierInfo = () => {
    setHeaderTitle('');
@@ -107,6 +145,7 @@ const AdminDashboard = () => {
     setShowSupplierInfo(true);
     setShowChategoryInfo(false);
     setShowUserInfo(false);
+    setShowAddMedicine(false);
   };
 
 
@@ -119,6 +158,7 @@ const AdminDashboard = () => {
      setShowSupplierInfo(false);
      setShowChategoryInfo(true);
      setShowUserInfo(false);
+     setShowAddMedicine(false);
    };
 
    const handleShowUserInfo = () => {
@@ -126,15 +166,14 @@ const AdminDashboard = () => {
      setShowAssignRole(false);
      dispatch(setShowAddUserForm(false));
      setShowAddCategory(false);
+     setShowAddMedicine(false);
      setShowAddSupplier(false);
      setShowSupplierInfo(false);
      setShowChategoryInfo(false);
      setShowUserInfo(true);
    };
+
  
-
-
-
 
 
   return (
@@ -158,6 +197,7 @@ const AdminDashboard = () => {
             <div className="user-options">
               <Nav.Link onClick={handleShowAddCategory}>Add Category</Nav.Link>
               <Nav.Link onClick={handleShowAddSupplier}>Add Supplier</Nav.Link>
+              <Nav.Link onClick={handleShowAddMedicine}>Add Medicine</Nav.Link>
             </div>
           </Collapse>
           <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
@@ -177,13 +217,17 @@ const AdminDashboard = () => {
           <AddCategory />
         ) : showAddSupplier ? (
           <AddSupply />
+        ) : showAddMedicine ? (
+          <AddMedicine />       
         ) : showSupplierInfo ? (
           <ShowSupplierInfo />
         ) : showChategoryInfo ? (
           <ShowChategoryInfo />
         ) : showUserInfo ? (
           <ShowUserInfo />
-        ) : 
+        ) : showListMedicine ? (
+          <ListMedicine />       
+        ) :
         
         
             (
@@ -200,7 +244,7 @@ const AdminDashboard = () => {
               <Button variant="outline-primary" onClick={handleShowUserInfo}>Show User INFO</Button>
               <Button variant="outline-primary" onClick={handleShowSupplierInfo}>Show Supplier INFO</Button>
               <Button variant="outline-primary" onClick={handleShowChategoryInfo}>Show Category Info</Button>
-              <Button variant="outline-primary" onClick={() => navigate('/admin/supplier')}>Add New Supplier</Button>
+              <Button variant="outline-primary" onClick={handleShowMedicineList}>Show Medicine List</Button>
             </div>
           </div>
         )}

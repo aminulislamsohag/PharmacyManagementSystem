@@ -94,6 +94,56 @@ export const addSupplier = async (supplierid,suppliername,suppliercontract,suppl
 };
 
 
+export const addMedicine = async (medicineid,medicinename,medicinedesc,chategoryid,supplierid) => {
+  try {
+    const response = await axios.post(`${process.env.REACT_APP_API_URL}/medicine/addmedicine`, {
+      medicineid,
+      medicinename,
+      medicinedesc,
+      chategoryid,
+      supplierid
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+export const fetchMedicinesData = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/medicine/listmedicine`);
+  if (!response.ok) throw new Error('Failed to fetch suppliers');
+  return await response.json();
+};
+
+
+export const updateMedicineData = async (medicine) => {
+  try {
+    const response = await axios.put(`${process.env.REACT_APP_API_URL}/medicine/editmedicine/${medicine.id}`, {
+      medicineid:medicine.medicineid,
+      medicinename: medicine.medicinename,
+      medicinedesc: medicine.medicinedesc,
+      chategoryid: medicine.chategoryid,
+      supplierid: medicine.supplierid,
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error updating medicine:', error);
+    throw error;
+  }
+};
+
+
+export const deleteMedicineData = async (id) => {
+  try {
+    const response = await axios.delete(`${process.env.REACT_APP_API_URL}/medicine/deletemedicine/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+
+
 
 export const fetchSuppliersData = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_URL}/medicine/suppliers`);
@@ -180,13 +230,10 @@ export const deleteUserData = async (id) => {
     throw error;
   }
 };
-
-
-
-
-
 export const fetcSearchData = async (searchQuery) => {
   const response = await fetch(`${process.env.REACT_APP_API_URL}/user/search?query=${searchQuery}`);
   if (!response.ok) throw new Error('Failed to fetch suppliers');
   return await response.json();
 };
+
+

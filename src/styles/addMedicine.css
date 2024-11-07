@@ -1,5 +1,5 @@
-.add-addsupplier-form {
-    width: 350px;
+.add-addmedicine-form {
+    width: 600px;
     max-width: 100%;
     padding: 15px;
     background: #f9f9f9;
@@ -8,36 +8,40 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   }
   
-  .add-addsupplier-form h2 {
+  .add-addmedicine-form h2 {
     margin-bottom: 1px;
   }
   
-  .add-addsupplier-form label {
+  .add-addmedicine-form label {
     display: block;
-    text-align: left;
+    text-align: right;
   }
+ 
   
-  .add-addsupplier-form input,
-  .add-addsupplier-form select {  /* Apply same styles to input and select */
-    width: 100%;
+  .add-addmedicine-form input,
+  .add-addmedicine-form select {  /* Apply same styles to input and select */
+    width: 67%;
     padding: 8px;
     margin-bottom: 3px;
+    margin-left: 60px;
     border: 1px solid #ccc;
     border-radius: 4px;
     background-color: #fff;
     appearance: none;  /* Optional: Remove default styling in some browsers */
   }
   
-  .add-addsupplier-form button {
-    padding: 10px 15px;
+  .add-addmedicine-form button {
+    padding: 11px 40px;
     background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 10px;
     cursor: pointer;
+    margin-left: 200px;
+    margin-top: 10px;
   }
   
-  .add-addsupplier-form button:hover {
+  .add-addmedicine-form button:hover {
     background-color: #0056b3;
   }
   

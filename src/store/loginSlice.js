@@ -10,7 +10,7 @@ export const login = createAsyncThunk('login/loginUser', async ({ username, pass
     localStorage.setItem('userRole', data); // Persist role in localStorage
     return data;
   } catch (error) {
-    return rejectWithValue(error.response?.data || 'Login failed');
+    return rejectWithValue(error.response?.data || 'Login network Error');
   }
 });
 
