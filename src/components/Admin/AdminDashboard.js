@@ -14,6 +14,7 @@ import ListMedicine from './ListMedicine';
 import ShowSupplierInfo from './ShowSupplierInfo';
 import ShowChategoryInfo from './ShowChategoryInfo';
 import ShowUserInfo from './ShowUserInfo';
+import ReportScreen from './ReportScreen';
 
 
 const AdminDashboard = () => {
@@ -33,6 +34,9 @@ const AdminDashboard = () => {
   const [showSupplierInfo, setShowSupplierInfo] = useState(false);
   const [showChategoryInfo, setShowChategoryInfo] = useState(false);
   const [showUserInfo, setShowUserInfo] = useState(false);
+  const [showReportOptions, setShowReportOptions] = useState(false);
+  const [showReportScreen, setShowReportScreen] = useState(false);
+
 
   useEffect(() => {
     const isAuthenticated = JSON.parse(localStorage.getItem('auth')) === true;
@@ -62,6 +66,8 @@ const AdminDashboard = () => {
     setShowChategoryInfo(false);
     setShowUserInfo(false);
     setShowListMedicine(false);
+    setShowReportScreen(false);
+
 
   };
 
@@ -173,6 +179,19 @@ const AdminDashboard = () => {
      setShowUserInfo(true);
    };
 
+
+   const handleShowReportSecreen = () => {
+    setHeaderTitle('All Report Screen');
+    setShowAssignRole(false);
+    dispatch(setShowAddUserForm(false));
+    setShowAddCategory(false);
+    setShowSupplierInfo(false);
+    setShowChategoryInfo(false);
+    setShowUserInfo(false);
+    setShowAddMedicine(false);
+    setShowReportScreen(true);
+  };
+
  
 
 
@@ -198,6 +217,12 @@ const AdminDashboard = () => {
               <Nav.Link onClick={handleShowAddCategory}>Add Category</Nav.Link>
               <Nav.Link onClick={handleShowAddSupplier}>Add Supplier</Nav.Link>
               <Nav.Link onClick={handleShowAddMedicine}>Add Medicine</Nav.Link>
+            </div>
+          </Collapse>
+          <Nav.Link onClick={() => setShowReportOptions(!showReportOptions)}>Report</Nav.Link>
+          <Collapse in={showReportOptions}>
+            <div className="user-options">
+              <Nav.Link onClick={handleShowReportSecreen}>Report Screen</Nav.Link>
             </div>
           </Collapse>
           <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
@@ -227,6 +252,8 @@ const AdminDashboard = () => {
           <ShowUserInfo />
         ) : showListMedicine ? (
           <ListMedicine />       
+        ) : showReportScreen ? (
+          <ReportScreen />       
         ) :
         
         

@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import Login from './components/Auth/Login';
 import AdminDashboard from './components/Admin/AdminDashboard';
 import ManagerDashboard from './components/Manager/ManagerDashboard';
+import AssistManagerDashboard from './components/AssistManager/AssistManagerDashboard';
 import Header from './components/Layout/Header';
 import Footer from './components/Layout/Footer';
 
@@ -26,6 +27,7 @@ function App() {
           {/* Role-based Routing */}
           {userRole === 'admin' && <Route path="/admin" element={<AdminDashboard />} />}
           {userRole === 'manager' && <Route path="/manager" element={<ManagerDashboard />} />}
+          {userRole === 'assistmanager' && <Route path="/assistmanager" element={<AssistManagerDashboard />} />}
 
           {/* Redirect based on role */}
           <Route 
@@ -35,6 +37,8 @@ function App() {
                 <Navigate to="/admin" />
               ) : userRole === 'manager' ? (
                 <Navigate to="/manager" />
+              ) : userRole === 'assistmanager' ? (
+                <Navigate to="/assistmanager" />
               ) : (
                 <Navigate to="/" />
               )

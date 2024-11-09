@@ -1,14 +1,13 @@
 // src/components/Admin/ShowMedicineInfo.js
 import React, { useEffect, useState } from 'react';
 import { Table, Button, Modal, Form } from 'react-bootstrap';
-import { fetchMedicinesData, updateMedicineData, deleteMedicineData, fetcSearchMedicibeData } from '../../utils/api';
+import { fetchMedicinesData, updateMedicineData, fetcSearchMedicibeData } from '../../utils/api';
 import '../../styles/ShowSupplierInfo.css';//its same as medicine page that why use same css
 
 
 const ShowMedicineInfo = () => {
   const [medicines, setMedicines] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
   const [selectedMedicine, setSelectedMedicine] = useState({
@@ -61,23 +60,7 @@ const ShowMedicineInfo = () => {
     }
   };
 
-  const handleDeleteConfirmation = (medicine) => {
-    setSelectedMedicine(medicine); // Set the selected medicine to be deleted
-    setShowDeleteModal(true); // Open delete confirmation modal
-  };
 
-  const handleDelete = async () => {
-    try {
-      await deleteMedicineData(selectedMedicine.id); // Call the API to delete the medicine
-      setMedicines((prevMedicines) =>
-        prevMedicines.filter((medicine) => medicine.id !== selectedMedicine.id) // Remove medicine from state
-      );
-      alert('Medicine deleted successfully');
-      setShowDeleteModal(false); // Close delete confirmation modal
-    } catch (error) {
-      console.error('Error deleting medicine:', error);
-    }
-  };
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -145,7 +128,6 @@ const ShowMedicineInfo = () => {
               {/* <td>{formatDate(medicine.createdDate)}</td> */}
               <td>
                 <Button variant="warning" onClick={() => handleEdit(medicine)}>Edit</Button>{' '}
-                <Button variant="danger" onClick={() => handleDeleteConfirmation(medicine)}>Delete</Button>
               </td>
             </tr>
           ))}
@@ -217,19 +199,7 @@ const ShowMedicineInfo = () => {
         </Modal.Footer>
       </Modal>
 
-      {/* Delete Confirmation Modal */}
-      <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Delete Medicine</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <p>Are you sure you want to delete <strong>{selectedMedicine.medicinename}</strong>?</p>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>No</Button>
-          <Button variant="danger" onClick={handleDelete}>Yes</Button>
-        </Modal.Footer>
-      </Modal>
+
     </div>
   );
 };

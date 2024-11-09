@@ -141,6 +141,11 @@ export const deleteMedicineData = async (id) => {
   }
 };
 
+export const fetcSearchMedicibeData = async (searchQuery) => {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/medicine/search?query=${searchQuery}`);
+  if (!response.ok) throw new Error('Failed to fetch suppliers');
+  return await response.json();
+};
 
 
 
@@ -236,4 +241,19 @@ export const fetcSearchData = async (searchQuery) => {
   return await response.json();
 };
 
+// Buy medicine
 
+export const buyMedicine = async (medicineid,quantity,makedate,expairdate,entryby) => {
+  try {
+    const response = await axios.post(`${process.env.REACT_APP_API_URL}/buymedicine/add`, {
+      medicineid,
+      quantity,
+      makedate,
+      expairdate,
+      entryby
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
