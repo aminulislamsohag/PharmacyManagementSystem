@@ -13,6 +13,7 @@ import ShowSupplierInfo from '../Admin/ShowSupplierInfo';
 import ShowChategoryInfo from '../Admin/ShowChategoryInfo';
 import ReportScreen from '../Admin/ReportScreen';
 import BuyMedicine from './BuyMedicine';
+import ShowBuyMedicineList from './ShowBuyMedicine';
 
 
 const ManagerDashboard = () => {
@@ -31,6 +32,8 @@ const ManagerDashboard = () => {
   const [showReportScreen, setShowReportScreen] = useState(false);
   const [showInventoryOptions, setShowInventoryOptions] = useState(false);
   const [showBuyMedicine, setShowBuyMedicine] = useState(false);
+  const [showBuyMedicineList, setShowBuyMedicineList] = useState(false);
+
 
 
   useEffect(() => {
@@ -60,6 +63,7 @@ const ManagerDashboard = () => {
     setShowListMedicine(false);
     setShowReportScreen(false);
     setShowBuyMedicine(false);
+    setShowBuyMedicineList(false);
 
 
 
@@ -103,7 +107,16 @@ const ManagerDashboard = () => {
     setShowChategoryInfo(false);
     setShowListMedicine(true);
    };
- 
+   const handleShowBuyMedicineList = () => {
+    setHeaderTitle('List of Buy Medicine');
+    setShowAddCategory(false);
+    setShowAddSupplier(false);
+    setShowAddMedicine(false);
+    setShowSupplierInfo(false);
+    setShowChategoryInfo(false);
+    setShowListMedicine(false);
+    setShowBuyMedicineList(true);
+   };
 
 
 
@@ -195,6 +208,8 @@ const ManagerDashboard = () => {
           <AddMedicine />       
         ) :showBuyMedicine ? (
           <BuyMedicine />       
+        ) : showBuyMedicineList ? (
+          <ShowBuyMedicineList />       
         ) : showSupplierInfo ? (
           <ShowSupplierInfo />
         ) : showChategoryInfo ? (
@@ -220,6 +235,7 @@ const ManagerDashboard = () => {
               <Button variant="outline-primary" onClick={handleShowSupplierInfo}>Show Supplier INFO</Button>
               <Button variant="outline-primary" onClick={handleShowChategoryInfo}>Show Category Info</Button>
               <Button variant="outline-primary" onClick={handleShowMedicineList}>Show Medicine List</Button>
+              <Button variant="outline-primary" onClick={handleShowBuyMedicineList}>Show Buy Medicine List</Button>
             </div>
           </div>
         )}

@@ -245,6 +245,7 @@ export const fetcSearchData = async (searchQuery) => {
 
 export const buyMedicine = async (medicineid,quantity,makedate,expairdate,entryby) => {
   try {
+    console.log( makedate,expairdate);
     const response = await axios.post(`${process.env.REACT_APP_API_URL}/buymedicine/add`, {
       medicineid,
       quantity,
@@ -257,3 +258,10 @@ export const buyMedicine = async (medicineid,quantity,makedate,expairdate,entryb
     throw error;
   }
 };
+
+export const fetchMedicinesBuyData = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/medicine/listmedicine`);
+  if (!response.ok) throw new Error('Failed to fetch suppliers');
+  return await response.json();
+};
+

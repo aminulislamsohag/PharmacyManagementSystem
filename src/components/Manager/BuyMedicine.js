@@ -1,29 +1,36 @@
 import React, { useEffect, useState  } from 'react';
 import { buyMedicine } from '../../utils/api';
 import '../../styles/addMedicine.css';
+import moment from 'moment';
 
 const BuyMedicine = () => {
   const [medicineid, setMedicineid] = useState('');
   const [quantity, setQuantity] = useState('');
-  const [makedate, setMakedate] = useState('');
-  const [expairdate, setExpairdate] = useState('');
+  const [fmtemakedate, setFmtMakedate] = useState('');
+  const [fmteexpairdate, setFmtExpairdate] = useState('');
   const [entryby, setEntryby] = useState('');
  
   useEffect(() => {
     setEntryby(localStorage.getItem('username')) ;
   }, []);
-
  // console.log( entryby);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Format dates before sending
+      // Convert date format if needed
+      const makedate = moment(fmtemakedate).format('DD-MM-YYYY');
+      const expairdate = moment(fmteexpairdate).format('DD-MM-YYYY');
+    
+    
       await buyMedicine(parseInt(medicineid),parseInt(quantity),makedate,expairdate,entryby);
       alert('Medicine added successfully');
       setMedicineid('');
       setQuantity('');
-      setMakedate('');
-      setExpairdate('');
+      setFmtMakedate('');
+      setFmtExpairdate('');
       setEntryby('');
     } catch (error) {
       console.error('Error adding Medicine:', error);
@@ -46,11 +53,11 @@ const BuyMedicine = () => {
         </label>
         <label>
         Make Date:
-          <input type="date" value={makedate} onChange={(e) => setMakedate(e.target.value)} required />
+          <input type="date" value={fmtemakedate} onChange={(e) => setFmtMakedate(e.target.value)} required />
         </label>
         <label>
-        Expair date ID :
-          <input type="date" value={expairdate} onChange={(e) => setExpairdate(e.target.value)} required />
+        Expair date :
+          <input type="date" value={fmteexpairdate} onChange={(e) => setFmtExpairdate(e.target.value)} required />
         </label>
        
         <button type="submit">Add Medicine Quantity</button>
