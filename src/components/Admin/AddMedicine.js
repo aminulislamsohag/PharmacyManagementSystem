@@ -15,7 +15,7 @@ const AddChategory = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await addMedicine(parseInt(medicineid),medicinename,medicinedesc,chategoryid,supplierid);
+      await addMedicine(parseInt(medicineid),medicinename,medicinedesc,chategoryid,parseInt(supplierid));
       alert('Medicine added successfully');
       setMedicineid('');
       setMedicinename('');

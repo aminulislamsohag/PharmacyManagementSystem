@@ -31,7 +31,6 @@ const BuyMedicine = () => {
       setQuantity('');
       setFmtMakedate('');
       setFmtExpairdate('');
-      setEntryby('');
     } catch (error) {
       console.error('Error adding Medicine:', error);
     }

@@ -260,7 +260,7 @@ export const buyMedicine = async (medicineid,quantity,makedate,expairdate,entryb
 };
 
 export const fetchMedicinesBuyData = async () => {
-  const response = await fetch(`${process.env.REACT_APP_API_URL}/medicine/listmedicine`);
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/buymedicine/info`);
   if (!response.ok) throw new Error('Failed to fetch suppliers');
   return await response.json();
 };
