@@ -181,7 +181,7 @@ const AdminDashboard = () => {
 
 
    const handleShowReportSecreen = () => {
-    setHeaderTitle('All Report Screen');
+    setHeaderTitle('Report Screen');
     setShowAssignRole(false);
     dispatch(setShowAddUserForm(false));
     setShowAddCategory(false);

@@ -1,9 +1,9 @@
 // src/components/Admin/ShowMedicineInfo.js
 import React, { useEffect, useState } from 'react';
 import { Table, Button, Modal, Form } from 'react-bootstrap';
-import { fetchMedicinesBuyData, updateMedicineData, deleteMedicineData, fetcSearchMedicibeData } from '../../utils/api';
+import { fetchMedicinesBuyData, updateBuyMedicineData, deleteBuyMedicineData, fetcSearchBuyMedicibeData } from '../../utils/api';
 import '../../styles/ShowSupplierInfo.css';//its same as medicine page that why use same css
-
+import moment from 'moment';
 
 const ShowMedicineInfo = () => {
   const [medicines, setMedicines] = useState([]);
@@ -13,11 +13,10 @@ const ShowMedicineInfo = () => {
 
   const [selectedMedicine, setSelectedMedicine] = useState({
     medicineid: '',
-    medicinename: '',
-    medicinedesc: '',
-    chategoryid: '',
-    supplierid: '',
-    createdDate: '' 
+    quantity: '',
+    price: '',
+    makedate: '',
+    expairdate: ''
   });
 
   useEffect(() => {
@@ -48,7 +47,14 @@ const ShowMedicineInfo = () => {
 
   const handleSaveChanges = async () => {
     try {
-      await updateMedicineData(selectedMedicine); // Call the API to update the medicine data
+      // Format dates before sending to API
+      const formattedMedicine = {
+        ...selectedMedicine,
+        makedate: moment(selectedMedicine.makedate).format('DD-MM-YYYY'),
+        expairdate: moment(selectedMedicine.expairdate).format('DD-MM-YYYY')
+      };
+
+      await updateBuyMedicineData(formattedMedicine); // Call the API with formatted data
       setMedicines((prevMedicines) =>
         prevMedicines.map((medicine) =>
           medicine.id === selectedMedicine.id ? selectedMedicine : medicine
@@ -61,14 +67,18 @@ const ShowMedicineInfo = () => {
     }
   };
 
+
+
+
   const handleDeleteConfirmation = (medicine) => {
     setSelectedMedicine(medicine); // Set the selected medicine to be deleted
     setShowDeleteModal(true); // Open delete confirmation modal
   };
 
+
   const handleDelete = async () => {
     try {
-      await deleteMedicineData(selectedMedicine.id); // Call the API to delete the medicine
+      await deleteBuyMedicineData(selectedMedicine.id); // Call the API to delete the medicine
       setMedicines((prevMedicines) =>
         prevMedicines.filter((medicine) => medicine.id !== selectedMedicine.id) // Remove medicine from state
       );
@@ -79,13 +89,17 @@ const ShowMedicineInfo = () => {
     }
   };
 
+
+
+
+
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
 
   const handleSearch = async () => {
     try {
-      const response = await fetcSearchMedicibeData(searchQuery);
+      const response = await fetcSearchBuyMedicibeData(searchQuery);
       setMedicines(Array.isArray(response) ? response : []);  // Ensure response is an array
     } catch (error) {
       console.error('Error searching for user data:', error);
@@ -111,7 +125,7 @@ const ShowMedicineInfo = () => {
           type="text" 
           className="form-control me-3"
           style={{ maxWidth: '300px' }} //css add here
-          placeholder="Search by ID or Name" 
+          placeholder="Search by ID or Entry by" 
           value={searchQuery} 
           onChange={handleSearchChange} 
         />
@@ -128,6 +142,7 @@ const ShowMedicineInfo = () => {
             <th>Supply ID</th>
             <th>Supply Name</th>
             <th>Quantity</th>
+            <th>Price</th>
             <th>Manufacture Date</th>  
             <th>Expare Date</th>
             <th>Entry Date</th>
@@ -144,6 +159,7 @@ const ShowMedicineInfo = () => {
               <td>{medicine.supplierid}</td>
               <td>{medicine.suppliername}</td>
               <td>{medicine.quantity}</td>
+              <td>{medicine.price}</td>
               <td>{medicine.makedate}</td>
               <td>{medicine.expairdate}</td>
               <td>{medicine.entryDate}</td>
@@ -151,7 +167,7 @@ const ShowMedicineInfo = () => {
 
               {/* <td>{formatDate(medicine.createdDate)}</td> */}
               <td>
-                <Button variant="warning" onClick={() => handleEdit(medicine)}>Edit</Button>{' '}
+                <Button variant="warning" onClick={() => handleEdit(medicine)}>Edit</Button>{'  '}
                 <Button variant="danger" onClick={() => handleDeleteConfirmation(medicine)}>Delete</Button>
               </td>
             </tr>
@@ -162,7 +178,7 @@ const ShowMedicineInfo = () => {
       {/* Modal for editing medicine */}
       <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit Medicine</Modal.Title>
+          <Modal.Title>Edit Buy Medicine</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
@@ -177,41 +193,41 @@ const ShowMedicineInfo = () => {
               />
             </Form.Group>
             <Form.Group>
-              <Form.Label>Medicine Name</Form.Label>
+              <Form.Label>Quantity</Form.Label>
               <Form.Control
                 type="text"
-                name="medicinename"
-                value={selectedMedicine.medicinename}
+                name="quantity"
+                value={selectedMedicine.quantity}
                 onChange={handleInputChange}
                 required
               />
             </Form.Group>
             <Form.Group>
-              <Form.Label>Description</Form.Label>
+              <Form.Label>Price</Form.Label>
               <Form.Control
                 type="text"
-                name="medicinedesc"
-                value={selectedMedicine.medicinedesc}
+                name="price"
+                value={selectedMedicine.price}
                 onChange={handleInputChange}
                 required
               />
             </Form.Group>
             <Form.Group>
-              <Form.Label>Chategory ID</Form.Label>
+              <Form.Label>Manufacture Date</Form.Label>
               <Form.Control
-                type="text"
-                name="chategoryid"
-                value={selectedMedicine.chategoryid}
+                type="date"
+                name="makedate"
+                value={selectedMedicine.makedate}
                 onChange={handleInputChange}
                 required
               />
             </Form.Group>
             <Form.Group>
-              <Form.Label>Supply ID</Form.Label>
+              <Form.Label>Expairy Date</Form.Label>
               <Form.Control
-                type="text"
-                name="supplierid"
-                value={selectedMedicine.supplierid}
+                type="date"
+                name="expairdate"
+                value={selectedMedicine.expairdate}
                 onChange={handleInputChange}
                 required
               />

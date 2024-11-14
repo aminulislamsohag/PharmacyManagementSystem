@@ -117,6 +117,7 @@ export const fetchMedicinesData = async () => {
 
 export const updateMedicineData = async (medicine) => {
   try {
+    console.log(medicine.id);
     const response = await axios.put(`${process.env.REACT_APP_API_URL}/medicine/editmedicine/${medicine.id}`, {
       medicineid:medicine.medicineid,
       medicinename: medicine.medicinename,
@@ -243,12 +244,13 @@ export const fetcSearchData = async (searchQuery) => {
 
 // Buy medicine
 
-export const buyMedicine = async (medicineid,quantity,makedate,expairdate,entryby) => {
+export const buyMedicine = async (medicineid,quantity,price,makedate,expairdate,entryby) => {
   try {
     console.log( makedate,expairdate);
     const response = await axios.post(`${process.env.REACT_APP_API_URL}/buymedicine/add`, {
       medicineid,
       quantity,
+      price,
       makedate,
       expairdate,
       entryby
@@ -265,3 +267,53 @@ export const fetchMedicinesBuyData = async () => {
   return await response.json();
 };
 
+///WHen buy medicine add and see medicine id or name show.
+export const searchMedicine = async (searchQuery) => {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/medicine/search?query=${searchQuery}`);
+  if (!response.ok) throw new Error('Failed to fetch suppliers');
+  return await response.json();
+};
+
+
+export const updateBuyMedicineData = async (medicine) => {
+  try {
+    const response = await axios.put(`${process.env.REACT_APP_API_URL}/buymedicine/editbuymedicine/${medicine.id}`, {
+      medicineid:medicine.medicineid,
+      quantity: medicine.quantity,
+      price: medicine.price,
+      makedate: medicine.makedate,
+      expairdate: medicine.expairdate
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error updating medicine:', error);
+    throw error;
+  }
+};
+
+export const deleteBuyMedicineData = async (id) => {
+  try {
+    const response = await axios.delete(`${process.env.REACT_APP_API_URL}/buymedicine/deletebuymedicine/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const fetcSearchBuyMedicibeData = async (searchQuery) => {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/buymedicine/search?query=${searchQuery}`);
+  if (!response.ok) throw new Error('Failed to fetch suppliers');
+  return await response.json();
+};
+
+
+export const BuyMedicineReport = async (params) => {
+  try {
+    console.log("Sending params:", params);
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/buymedicine/buyReport`, { params });
+    return response.data;
+  } catch (error) {
+    console.error("Error generating report:", error);
+    throw error;
+  }
+};
