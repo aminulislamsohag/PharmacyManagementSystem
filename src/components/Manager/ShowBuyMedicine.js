@@ -137,6 +137,7 @@ const ShowMedicineInfo = () => {
         <thead>
           <tr>
             <th>SL NO</th>
+            <th>Vhoucher NO</th>
             <th>Medicine ID</th>
             <th>Medicine Name</th>
             <th>Supply ID</th>
@@ -154,6 +155,7 @@ const ShowMedicineInfo = () => {
           {medicines.map((medicine, index) => (
             <tr key={medicine.id}>
               <td>{index + 1}</td>
+              <td>{medicine.voucherid}</td>
               <td>{medicine.medicineid}</td>
               <td>{medicine.medicinename}</td>
               <td>{medicine.supplierid}</td>
@@ -162,7 +164,7 @@ const ShowMedicineInfo = () => {
               <td>{medicine.price}</td>
               <td>{medicine.makedate}</td>
               <td>{medicine.expairdate}</td>
-              <td>{medicine.entryDate}</td>
+              <td>{medicine.entrydate}</td>
               <td>{medicine.entryby}</td>
 
               {/* <td>{formatDate(medicine.createdDate)}</td> */}
@@ -182,6 +184,15 @@ const ShowMedicineInfo = () => {
         </Modal.Header>
         <Modal.Body>
           <Form>
+          <Form.Group>
+              <Form.Label>Voucher NO</Form.Label>
+              <Form.Control
+                type="text"
+                name="voucherid"
+                value={selectedMedicine.voucherid}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
             <Form.Group>
               <Form.Label>Medicine ID</Form.Label>
               <Form.Control

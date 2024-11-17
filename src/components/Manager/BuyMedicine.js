@@ -9,6 +9,7 @@ const BuyMedicine = () => {
   const [price, setPrice] = useState('');
   const [fmtemakedate, setFmtMakedate] = useState('');
   const [fmteexpairdate, setFmtExpairdate] = useState('');
+  const [voucherid, setVoucherid] = useState('');
   const [entryby, setEntryby] = useState('');
   const [searchTerm, setSearchTerm] = useState(''); // For search input
   const [searchResults, setSearchResults] = useState([]); // To hold search results
@@ -43,13 +44,14 @@ const BuyMedicine = () => {
     try {
       const makedate = moment(fmtemakedate).format('DD-MM-YYYY');
       const expairdate = moment(fmteexpairdate).format('DD-MM-YYYY');
-      await buyMedicine(parseInt(medicineid), parseInt(quantity), parseInt(price), makedate, expairdate, entryby);
+      await buyMedicine(parseInt(medicineid), parseInt(quantity), parseInt(price), makedate, expairdate,voucherid, entryby);
       alert('Medicine added successfully');
       setMedicineid('');
       setQuantity('');
       setPrice('');
       setFmtMakedate('');
       setFmtExpairdate('');
+      setVoucherid('');
       setSearchTerm('');
     } catch (error) {
       console.error('Error adding Medicine:', error);
@@ -107,6 +109,12 @@ const BuyMedicine = () => {
           Expiry Date:
           <input type="date" value={fmteexpairdate} onChange={(e) => setFmtExpairdate(e.target.value)} required />
         </label>
+
+        <label>
+          Voucher NO:
+          <input type="text" value={voucherid} onChange={(e) => setVoucherid(e.target.value)} required />
+        </label>
+        
         
         <button type="submit">Add Medicine Quantity</button>
       </form>

@@ -244,7 +244,7 @@ export const fetcSearchData = async (searchQuery) => {
 
 // Buy medicine
 
-export const buyMedicine = async (medicineid,quantity,price,makedate,expairdate,entryby) => {
+export const buyMedicine = async (medicineid,quantity,price,makedate,expairdate,voucherid,entryby) => {
   try {
     console.log( makedate,expairdate);
     const response = await axios.post(`${process.env.REACT_APP_API_URL}/buymedicine/add`, {
@@ -253,6 +253,7 @@ export const buyMedicine = async (medicineid,quantity,price,makedate,expairdate,
       price,
       makedate,
       expairdate,
+      voucherid,
       entryby
     });
     return response.data;
@@ -282,7 +283,8 @@ export const updateBuyMedicineData = async (medicine) => {
       quantity: medicine.quantity,
       price: medicine.price,
       makedate: medicine.makedate,
-      expairdate: medicine.expairdate
+      expairdate: medicine.expairdate,
+      voucherid: medicine.voucherid
     });
     return response.data;
   } catch (error) {
@@ -310,8 +312,26 @@ export const fetcSearchBuyMedicibeData = async (searchQuery) => {
 export const BuyMedicineReport = async (params) => {
   try {
     console.log("Sending params:", params);
-    const response = await axios.get(`${process.env.REACT_APP_API_URL}/buymedicine/buyReport`, { params });
-    return response.data;
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/buymedicine/buyReport`, {
+      params,
+      responseType: 'blob', // Ensure the response is treated as a binary file
+    });
+    return response;
+  } catch (error) {
+    console.error("Error generating report:", error);
+    throw error;
+  }
+};
+
+
+export const VoucherReport = async (params) => {
+  try {
+    console.log("Sending params:", params);
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/buymedicine/voucherReport`, {
+      params,
+      responseType: 'blob', // Ensure the response is treated as a binary file
+    });
+    return response;
   } catch (error) {
     console.error("Error generating report:", error);
     throw error;
