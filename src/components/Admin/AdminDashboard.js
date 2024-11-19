@@ -15,6 +15,8 @@ import ShowSupplierInfo from './ShowSupplierInfo';
 import ShowChategoryInfo from './ShowChategoryInfo';
 import ShowUserInfo from './ShowUserInfo';
 import ReportScreen from './ReportScreen';
+import BuyMedicine from './BuyMedicine';
+import ShowBuyMedicineList from './ShowBuyMedicine';
 
 
 const AdminDashboard = () => {
@@ -23,10 +25,9 @@ const AdminDashboard = () => {
   const [username, setUsername] = useState('');
   const [headerTitle, setHeaderTitle] = useState('Dashboard');
 
-  const [showUserOptions, setShowUserOptions] = useState(false);
+  const [activeSection, setActiveSection] = useState(null); // Tracks which section is expanded
   const showAddUserForm = useSelector((state) => state.user.showAddUserForm);
   const [showAssignRole, setShowAssignRole] = useState(false);
-  const [showMedicineOptions, setShowMedicineOptions] = useState(false);
   const [showAddCategory, setShowAddCategory] = useState(false);
   const [showAddSupplier, setShowAddSupplier] = useState(false);
   const [showAddMedicine, setShowAddMedicine] = useState(false);
@@ -34,8 +35,9 @@ const AdminDashboard = () => {
   const [showSupplierInfo, setShowSupplierInfo] = useState(false);
   const [showChategoryInfo, setShowChategoryInfo] = useState(false);
   const [showUserInfo, setShowUserInfo] = useState(false);
-  const [showReportOptions, setShowReportOptions] = useState(false);
   const [showReportScreen, setShowReportScreen] = useState(false);
+  const [showBuyMedicine, setShowBuyMedicine] = useState(false);
+  const [showBuyMedicineList, setShowBuyMedicineList] = useState(false);
 
 
   useEffect(() => {
@@ -55,144 +57,104 @@ const AdminDashboard = () => {
     navigate('/');
   };
 
+  const toggleSection = (section) => {
+    setActiveSection((prevSection) => (prevSection === section ? null : section));
+  };
+
   const handleShowDashboard = () => {
     setHeaderTitle('Dashboard');
-    setShowAssignRole(false);
+    resetAllStates();
+  };
+
+  const resetAllStates = () => {
     dispatch(setShowAddUserForm(false));
+    setShowAssignRole(false);
     setShowAddCategory(false);
     setShowAddSupplier(false);
     setShowAddMedicine(false);
-    setShowSupplierInfo(false);
-    setShowChategoryInfo(false);
-    setShowUserInfo(false);
-    setShowListMedicine(false);
+    setShowBuyMedicine(false);
     setShowReportScreen(false);
 
+    setShowUserInfo(false);
+    setShowSupplierInfo(false);
+    setShowChategoryInfo(false);
+    setShowListMedicine(false);
+    setShowBuyMedicineList(false);
 
   };
 
   const handleShowAddUser = () => {
     setHeaderTitle('Add User Form');
-    setShowAssignRole(false);
-    dispatch(setShowAddUserForm(true));
-    setShowSupplierInfo(false);
-    setShowChategoryInfo(false);
-    setShowUserInfo(false);
-    setShowAddMedicine(false);
+    resetAllStates();
+     dispatch(setShowAddUserForm(true));
   };
 
   const handleShowAssignRole = () => {
     setHeaderTitle('Assign Role');
-    dispatch(setShowAddUserForm(false));
+    resetAllStates();
     setShowAssignRole(true);
-    setShowSupplierInfo(false);
-    setShowChategoryInfo(false);
-    setShowUserInfo(false);
-    setShowAddMedicine(false);
   };
 
   const handleShowAddCategory = () => {
     setHeaderTitle('Add Category');
-    setShowAssignRole(false);
-    dispatch(setShowAddUserForm(false));
+    resetAllStates();
     setShowAddCategory(true);
-    setShowSupplierInfo(false);
-    setShowChategoryInfo(false);
-    setShowUserInfo(false);
-    setShowAddMedicine(false);
   };
 
   const handleShowAddSupplier = () => {
     setHeaderTitle('Add Supplier');
-    setShowAssignRole(false);
-    dispatch(setShowAddUserForm(false));
-    setShowAddCategory(false);
+    resetAllStates();
     setShowAddSupplier(true);
-    setShowSupplierInfo(false);
-    setShowChategoryInfo(false);
-    setShowUserInfo(false);
-    setShowAddMedicine(false);
   };
   const handleShowAddMedicine = () => {
     setHeaderTitle('Add Mecinine');
-    setShowAssignRole(false);
-    dispatch(setShowAddUserForm(false));
-    setShowAddCategory(false);
-    setShowAddSupplier(false);
+    resetAllStates();
     setShowAddMedicine(true);
-    setShowSupplierInfo(false);
-    setShowChategoryInfo(false);
-    setShowUserInfo(false);
   };
 
   const handleShowMedicineList = () => {
-    setHeaderTitle('List of Medicine');
-    setShowAssignRole(false);
-    dispatch(setShowAddUserForm(false));
-    setShowAddCategory(false);
-    setShowAddSupplier(false);
-    setShowAddMedicine(false);
-    setShowSupplierInfo(false);
-    setShowChategoryInfo(false);
-    setShowUserInfo(false);
+    resetAllStates();
     setShowListMedicine(true);
+   };
+   const handleShowBuyMedicineList = () => {
+    setHeaderTitle('List of Buy Medicine');
+    resetAllStates();
+    setShowBuyMedicineList(true);
    };
  
 
-
-
-
   const handleShowSupplierInfo = () => {
    setHeaderTitle('');
-    setShowAssignRole(false);
-    dispatch(setShowAddUserForm(false));
-    setShowAddCategory(false);
-    setShowAddSupplier(false);
+   resetAllStates();
     setShowSupplierInfo(true);
-    setShowChategoryInfo(false);
-    setShowUserInfo(false);
-    setShowAddMedicine(false);
   };
 
 
   const handleShowChategoryInfo = () => {
     setHeaderTitle('');
-     setShowAssignRole(false);
-     dispatch(setShowAddUserForm(false));
-     setShowAddCategory(false);
-     setShowAddSupplier(false);
-     setShowSupplierInfo(false);
+    resetAllStates();
      setShowChategoryInfo(true);
-     setShowUserInfo(false);
-     setShowAddMedicine(false);
    };
 
    const handleShowUserInfo = () => {
     setHeaderTitle('');
-     setShowAssignRole(false);
-     dispatch(setShowAddUserForm(false));
-     setShowAddCategory(false);
-     setShowAddMedicine(false);
-     setShowAddSupplier(false);
-     setShowSupplierInfo(false);
-     setShowChategoryInfo(false);
+    resetAllStates();
      setShowUserInfo(true);
    };
 
 
    const handleShowReportSecreen = () => {
     setHeaderTitle('Report Screen');
-    setShowAssignRole(false);
-    dispatch(setShowAddUserForm(false));
-    setShowAddCategory(false);
-    setShowSupplierInfo(false);
-    setShowChategoryInfo(false);
-    setShowUserInfo(false);
-    setShowAddMedicine(false);
+    resetAllStates();
     setShowReportScreen(true);
   };
 
- 
+   const handleShowBuyMedicine = () => {
+    setHeaderTitle('Buy Medicine Entry');
+    resetAllStates();
+    setShowBuyMedicine(true);
+  };
+
 
 
   return (
@@ -204,25 +166,31 @@ const AdminDashboard = () => {
         </div>
         <Nav className="flex-column">
           <Nav.Link onClick={handleShowDashboard}>Dashboard</Nav.Link>
-          <Nav.Link onClick={() => setShowUserOptions(!showUserOptions)}>User</Nav.Link>
-          <Collapse in={showUserOptions}>
+          <Nav.Link onClick={() => toggleSection('user')}>User</Nav.Link>
+          <Collapse in={activeSection === 'user'}>
             <div className="user-options">
-              <Nav.Link onClick={handleShowAddUser}>Add User</Nav.Link>
-              <Nav.Link onClick={handleShowAssignRole}>Assign Role</Nav.Link>
+              <Nav.Link onClick={() => handleShowAddUser()}>Add User</Nav.Link>
+              <Nav.Link onClick={() => handleShowAssignRole()}>Assign Role</Nav.Link>
             </div>
           </Collapse>
-          <Nav.Link onClick={() => setShowMedicineOptions(!showMedicineOptions)}>Medicine</Nav.Link>
-          <Collapse in={showMedicineOptions}>
+          <Nav.Link onClick={() => toggleSection('medicine')}>Medicine</Nav.Link>
+          <Collapse in={activeSection === 'medicine'}>
             <div className="user-options">
-              <Nav.Link onClick={handleShowAddCategory}>Add Category</Nav.Link>
-              <Nav.Link onClick={handleShowAddSupplier}>Add Supplier</Nav.Link>
-              <Nav.Link onClick={handleShowAddMedicine}>Add Medicine</Nav.Link>
+              <Nav.Link onClick={() => handleShowAddCategory()}>Add Category</Nav.Link>
+              <Nav.Link onClick={() => handleShowAddSupplier()}>Add Supplier</Nav.Link>
+              <Nav.Link onClick={() => handleShowAddMedicine()}>Add Medicine</Nav.Link>
             </div>
           </Collapse>
-          <Nav.Link onClick={() => setShowReportOptions(!showReportOptions)}>Report</Nav.Link>
-          <Collapse in={showReportOptions}>
+          <Nav.Link onClick={() => toggleSection('inventory')}>Inventory</Nav.Link>
+          <Collapse in={activeSection === 'inventory'}>
             <div className="user-options">
-              <Nav.Link onClick={handleShowReportSecreen}>Report Screen</Nav.Link>
+              <Nav.Link onClick={() => handleShowBuyMedicine()}>Buy Medicine</Nav.Link>
+            </div>
+          </Collapse>
+          <Nav.Link onClick={() => toggleSection('report')}>Report</Nav.Link>
+          <Collapse in={activeSection === 'report'}>
+            <div className="user-options">
+              <Nav.Link onClick={() => handleShowReportSecreen()}>Report Screen</Nav.Link>
             </div>
           </Collapse>
           <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
@@ -244,6 +212,10 @@ const AdminDashboard = () => {
           <AddSupply />
         ) : showAddMedicine ? (
           <AddMedicine />       
+        ) :showBuyMedicine ? (
+          <BuyMedicine />       
+        ) : showBuyMedicineList ? (
+          <ShowBuyMedicineList />       
         ) : showSupplierInfo ? (
           <ShowSupplierInfo />
         ) : showChategoryInfo ? (
@@ -272,6 +244,7 @@ const AdminDashboard = () => {
               <Button variant="outline-primary" onClick={handleShowSupplierInfo}>Show Supplier INFO</Button>
               <Button variant="outline-primary" onClick={handleShowChategoryInfo}>Show Category Info</Button>
               <Button variant="outline-primary" onClick={handleShowMedicineList}>Show Medicine List</Button>
+              <Button variant="outline-primary" onClick={handleShowBuyMedicineList}>Show Buy Medicine List</Button>
             </div>
           </div>
         )}

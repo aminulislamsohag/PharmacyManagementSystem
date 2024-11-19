@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { addChategory } from '../../utils/api';
-import '../../styles/AddChategory.css';
+import '../../styles/addMedicine.css';
 
 const AddChategory = () => {
   const [chategoryid, setChategoryid] = useState('');
@@ -25,7 +25,7 @@ const AddChategory = () => {
   };
 
   return (
-    <div className="add-addcategory-form">
+    <div className="add-addmedicine-form">
       <form onSubmit={handleSubmit}>
         <label>
         Category ID:

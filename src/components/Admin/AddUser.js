@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { addUser } from '../../utils/api';
-import '../../styles/AddUser.css';
+import '../../styles/addMedicine.css';
 
 const AddUser = () => {
   const [userid, setUserId] = useState('');
@@ -23,8 +23,8 @@ const AddUser = () => {
   };
 
   return (
-    <div className="add-user-form">
-      <h2>Adding User</h2>
+    <div className="add-addmedicine-form">
+      {/* <h2>Adding User</h2> */}
       <form onSubmit={handleSubmit}>
         <label>
           User ID:

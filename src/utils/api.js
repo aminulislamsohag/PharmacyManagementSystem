@@ -312,28 +312,34 @@ export const fetcSearchBuyMedicibeData = async (searchQuery) => {
 export const BuyMedicineReport = async (params) => {
   try {
     console.log("Sending params:", params);
-    const response = await axios.get(`${process.env.REACT_APP_API_URL}/buymedicine/buyReport`, {
-      params,
-      responseType: 'blob', // Ensure the response is treated as a binary file
-    });
+    const response = await axios.get(
+      `${process.env.REACT_APP_API_URL}/buymedicine/buyReport`,
+      {
+        params, // Include the `fileType` parameter here
+        responseType: 'blob', // Ensure the response is treated as a binary file
+      }
+    );
     return response;
   } catch (error) {
-    console.error("Error generating report:", error);
+    console.error("Error generating Buy Medicine report:", error);
     throw error;
   }
 };
-
 
 export const VoucherReport = async (params) => {
   try {
     console.log("Sending params:", params);
-    const response = await axios.get(`${process.env.REACT_APP_API_URL}/buymedicine/voucherReport`, {
-      params,
-      responseType: 'blob', // Ensure the response is treated as a binary file
-    });
+    const response = await axios.get(
+      `${process.env.REACT_APP_API_URL}/buymedicine/voucherReport`,
+      {
+        params, // Include the `fileType` parameter here
+        responseType: 'blob', // Ensure the response is treated as a binary file
+      }
+    );
     return response;
   } catch (error) {
-    console.error("Error generating report:", error);
+    console.error("Error generating Voucher report:", error);
     throw error;
   }
 };
+

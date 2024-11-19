@@ -1,9 +1,8 @@
-// src/components/Admin/ReportScreen.js
 import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import moment from 'moment'; // Import moment
 import '../../styles/ReportScreen.css';
-import { BuyMedicineReport,VoucherReport } from '../../utils/api'; // Import your API functions
+import { BuyMedicineReport, VoucherReport } from '../../utils/api'; // Import your API functions
 import { saveAs } from 'file-saver'; // For downloading files
 
 // Define report configurations with different parameter types
@@ -23,9 +22,6 @@ const reports = [
       { id: 'entrydate', label: 'Entry Date', type: 'date' }
     ],
   },
-
-
-
   {
     id: 3,
     name: 'Inventory Report',
@@ -48,6 +44,7 @@ const reports = [
 const ReportScreen = () => {
   const [selectedReport, setSelectedReport] = useState(null);
   const [formValues, setFormValues] = useState({});
+  const [fileType, setFileType] = useState('pdf'); // State for selected file type
   const [loading, setLoading] = useState(false); // Loading state for button
 
   const handleReportSelect = (report) => {
@@ -62,9 +59,13 @@ const ReportScreen = () => {
     }));
   };
 
+  const handleFileTypeChange = (e) => {
+    setFileType(e.target.value); // Update file type (pdf or xlsx)
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     // Format date fields before sending
     const formattedValues = { ...formValues };
     selectedReport.parameters.forEach(param => {
@@ -72,38 +73,30 @@ const ReportScreen = () => {
         formattedValues[param.id] = moment(formValues[param.id]).format('DD-MM-YYYY');
       }
     });
-  
+
     try {
       setLoading(true); // Show loading spinner
+
+      let response;
       if (selectedReport.name === 'Buy Report') {
-        // Call your API function to fetch the PDF
-        const response = await BuyMedicineReport(formattedValues);
-  
-        // Create a Blob from the response and trigger download
-        const blob = new Blob([response.data], { type: 'application/pdf' });
-        saveAs(blob, `${selectedReport.name}.pdf`);
-        console.log('Report downloaded successfully');
-      } 
-       else if(selectedReport.name === 'Voucher Report'){
-        const response = await VoucherReport(formattedValues);
-  
-        // Create a Blob from the response and trigger download
-        const blob = new Blob([response.data], { type: 'application/pdf' });
-        saveAs(blob, `${selectedReport.name}.pdf`);
-        console.log('Report downloaded successfully');
-      }
-      
-      
-      else {
+        response = await BuyMedicineReport({ ...formattedValues, fileType });
+      } else if (selectedReport.name === 'Voucher Report') {
+        response = await VoucherReport({ ...formattedValues, fileType });
+      } else {
         console.log('Other report logic to be implemented');
+        return;
       }
+
+      // Create a Blob from the response and trigger download
+      const blob = new Blob([response.data], { type: fileType === 'pdf' ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      saveAs(blob, `${selectedReport.name}.${fileType}`);
+      console.log('Report downloaded successfully');
     } catch (error) {
       console.error('Error generating report:', error);
     } finally {
       setLoading(false); // Hide loading spinner
     }
   };
-  
 
   return (
     <div className="report-dashboard">
@@ -134,6 +127,13 @@ const ReportScreen = () => {
                   />
                 </Form.Group>
               ))}
+              <Form.Group className="mb-3">
+                <Form.Label>File Type</Form.Label>
+                <Form.Control as="select" value={fileType} onChange={handleFileTypeChange}>
+                  <option value="pdf">PDF</option>
+                  <option value="xlsx">Excel</option>
+                </Form.Control>
+              </Form.Group>
               <Button variant="primary" type="submit" className="mt-3" disabled={loading}>
                 {loading ? 'Generating...' : 'Generate Report'}
               </Button>
